@@ -26,7 +26,7 @@ public class CompassCommand implements CommandExecutor {
             return true;
         }
 
-        ((Player) sender).getInventory().addItem(manager.getPlayerCompass(target));
+        ((Player) sender).getInventory().addItem(manager.getPlayerCompass(target, PlayerCompassPlugin.getData().getUpdatePointPeriod()));
         return true;
     }
 }

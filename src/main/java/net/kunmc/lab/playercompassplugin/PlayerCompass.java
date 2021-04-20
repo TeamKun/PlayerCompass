@@ -16,7 +16,7 @@ public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
     private BukkitTask updaterTask;
 
-    PlayerCompass(Player target) {
+    PlayerCompass(Player target, long updatePeriod) {
         super(Material.COMPASS);
         this.targetUUID = target.getUniqueId();
 
@@ -32,10 +32,10 @@ public class PlayerCompass extends ItemStack {
 
         setCompassMeta(compassMeta);
 
-        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, PlayerCompassPlugin.getData().getUpdatePointPeriod());
+        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod);
     }
 
-    PlayerCompass(UUID targetUUID, Location loc) {
+    PlayerCompass(UUID targetUUID, Location loc, long updatePeriod) {
         super(Material.COMPASS);
         this.targetUUID = targetUUID;
 
@@ -58,7 +58,7 @@ public class PlayerCompass extends ItemStack {
 
         setCompassMeta(compassMeta);
 
-        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, PlayerCompassPlugin.getData().getUpdatePointPeriod());
+        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod);
     }
 
     public static boolean isPlayerCompass(ItemStack compass) {

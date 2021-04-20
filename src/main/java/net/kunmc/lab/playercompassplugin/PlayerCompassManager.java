@@ -20,13 +20,13 @@ public class PlayerCompassManager {
         }
     }
 
-    public PlayerCompass getPlayerCompass(Player target) {
-        compassesCache.putIfAbsent(target.getUniqueId(), new PlayerCompass(target));
+    public PlayerCompass getPlayerCompass(Player target, long updatePeriod) {
+        compassesCache.putIfAbsent(target.getUniqueId(), new PlayerCompass(target, updatePeriod));
         return compassesCache.get(target.getUniqueId());
     }
 
-    public PlayerCompass registerCompassByUUID(UUID targetUUID, Location loc) {
-        compassesCache.putIfAbsent(targetUUID, new PlayerCompass(targetUUID, loc));
+    public PlayerCompass registerCompassByUUID(UUID targetUUID, Location loc, long updatePeriod) {
+        compassesCache.putIfAbsent(targetUUID, new PlayerCompass(targetUUID, loc, updatePeriod));
         return compassesCache.get(targetUUID);
     }
 

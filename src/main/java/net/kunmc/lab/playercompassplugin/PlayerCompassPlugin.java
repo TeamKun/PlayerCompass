@@ -43,7 +43,7 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         Map<UUID, Location> lastPoints = data.getLastPoints();
         if (lastPoints != null) {
             for (UUID uuid : lastPoints.keySet()) {
-                manager.registerCompassByUUID(uuid, lastPoints.get(uuid));
+                manager.registerCompassByUUID(uuid, lastPoints.get(uuid), data.getUpdatePointPeriod());
             }
         }
 
