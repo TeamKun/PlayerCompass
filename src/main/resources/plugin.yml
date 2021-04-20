@@ -1,0 +1,9 @@
+name: PlayerCompassPlugin
+version: ${project.version}
+main: net.kunmc.lab.playercompassplugin.PlayerCompassPlugin
+api-version: 1.16
+commands:
+  playercompass:
+    usage: /playercompass <player>
+  playerposition:
+    usage: /playerposition <player>
