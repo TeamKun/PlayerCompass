@@ -5,5 +5,18 @@ api-version: 1.16
 commands:
   playercompass:
     usage: /playercompass <player>
+    permission: playercompass
   playerposition:
     usage: /playerposition <player>
+    permission: playerposition
+  changeupdateperiod:
+    usage: /changeupdateperiod <period>
+    permission: changeupdateperiod
+
+permissions:
+  playercompass:
+    default: op
+  playerposition:
+    default: op
+  changeupdateperiod:
+    default: op
