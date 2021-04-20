@@ -17,14 +17,12 @@ import java.util.stream.Collectors;
 
 public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
-    private final Set<UUID> holdersUUID = new HashSet<>();
     private final PlayerCompass instance;
     private BukkitTask updatePosTask;
 
-    PlayerCompass(Player target, Player holder) {
+    PlayerCompass(Player target) {
         super(Material.COMPASS);
         this.targetUUID = target.getUniqueId();
-        this.holdersUUID.add(holder.getUniqueId());
         this.instance = this;
 
         CompassMeta compassMeta = ((CompassMeta) this.getItemMeta());
@@ -40,7 +38,7 @@ public class PlayerCompass extends ItemStack {
 
         setCompassMeta(compassMeta);
 
-        this.updatePosTask = new updatePosTask().runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 8);
+        this.updatePosTask = new updatePosTask().runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, PlayerCompassPlugin.getSaveData().getUpdatePosPeriod());
     }
 
     private class updatePosTask extends BukkitRunnable {
@@ -55,11 +53,8 @@ public class PlayerCompass extends ItemStack {
             meta.setLodestone(loc);
             setCompassMeta(meta);
 
-            for (UUID holderUUID : holdersUUID) {
-                Player holder = Bukkit.getPlayer(holderUUID);
-                if (holder == null) continue;
-
-                PlayerInventory inv = holder.getInventory();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                PlayerInventory inv = p.getInventory();
                 Map<Integer, ? extends ItemStack> oldCompasses = inv.all(Material.COMPASS);
                 if (oldCompasses.isEmpty()) continue;
 
@@ -67,7 +62,7 @@ public class PlayerCompass extends ItemStack {
                     ItemStack oldCompass = entry.getValue();
                     if (PlayerCompass.equals(oldCompass,instance)) {
                         instance.setAmount(oldCompass.getAmount());
-                        holder.getInventory().setItem(entry.getKey(), instance);
+                        p.getInventory().setItem(entry.getKey(), instance);
                     }
                 }
                 ItemStack offHand = inv.getItemInOffHand();
@@ -107,24 +102,4 @@ public class PlayerCompass extends ItemStack {
     }
 
     public UUID getTargetUUID() { return targetUUID; }
-
-    public Set<Player> getHolders() {
-        return new HashSet<>(holdersUUID).stream().map(Bukkit::getPlayer).collect(Collectors.toSet());
-    }
-
-    public Set<UUID> getHoldersUUID() {
-        return new HashSet<>(holdersUUID);
-    }
-
-    public void addHolder(Player holder) {
-        holdersUUID.add(holder.getUniqueId());
-    }
-
-    public void addHolders(Collection<Player> holders) {
-        holders.forEach(this::addHolder);
-    }
-
-    public void removeHolder(Player holder) {
-        holdersUUID.remove(holder.getUniqueId());
-    }
 }

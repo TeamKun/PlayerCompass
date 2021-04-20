@@ -25,8 +25,8 @@ public class CompassCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + targetName + "はログインしていません.");
             return true;
         }
-        Player holder = ((Player) sender);
-        holder.getInventory().addItem(manager.getPlayerCompass(target, holder));
+
+        ((Player) sender).getInventory().addItem(manager.getPlayerCompass(target));
         return true;
     }
 }

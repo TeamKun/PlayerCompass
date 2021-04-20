@@ -21,11 +21,9 @@ public class PlayerCompassManager {
         return compasses.remove(uuid);
     }
 
-    public PlayerCompass getPlayerCompass(Player target, Player holder) {
-        compasses.putIfAbsent(target.getUniqueId(), new PlayerCompass(target, holder));
-        PlayerCompass compass = compasses.get(target.getUniqueId());
-        compass.addHolder(holder);
-        return compass;
+    public PlayerCompass getPlayerCompass(Player target) {
+        compasses.putIfAbsent(target.getUniqueId(), new PlayerCompass(target));
+        return compasses.get(target.getUniqueId());
     }
 
     public Collection<PlayerCompass> getRegisteredCompassList() {
