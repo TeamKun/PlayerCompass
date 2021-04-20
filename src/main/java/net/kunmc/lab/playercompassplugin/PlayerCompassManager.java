@@ -18,16 +18,19 @@ public class PlayerCompassManager {
         for (PlayerCompass compass : compassesCache.values()) {
             compass.restartUpdaterTask(plugin, 0, period);
         }
+        data.setUpdatePointPeriod(period);
     }
 
-    public PlayerCompass getPlayerCompass(Player target, long updatePeriod) {
-        compassesCache.putIfAbsent(target.getUniqueId(), new PlayerCompass(target, updatePeriod));
-        return compassesCache.get(target.getUniqueId());
+    public PlayerCompass getPlayerCompass(Player target) {
+        return getPlayerCompass(target.getUniqueId());
     }
 
-    public PlayerCompass registerCompassByUUID(UUID targetUUID, Location loc, long updatePeriod) {
-        compassesCache.putIfAbsent(targetUUID, new PlayerCompass(targetUUID, loc, updatePeriod));
+    public PlayerCompass getPlayerCompass(UUID targetUUID) {
         return compassesCache.get(targetUUID);
+    }
+
+    public void registerCompass(PlayerCompass compass) {
+        compassesCache.put(compass.getTarget().getUniqueId(), compass);
     }
 
     public void updateCompassPoint(PlayerCompass compass) {

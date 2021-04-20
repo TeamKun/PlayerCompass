@@ -1,6 +1,5 @@
 package net.kunmc.lab.playercompassplugin;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;

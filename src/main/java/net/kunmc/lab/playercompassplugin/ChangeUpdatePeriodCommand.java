@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ChangeUpdatePeriodCommand implements CommandExecutor, TabCompleter {
     PlayerCompassManager manager = PlayerCompassPlugin.getManager();
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length < 1) return false;
@@ -22,15 +22,15 @@ public class ChangeUpdatePeriodCommand implements CommandExecutor, TabCompleter 
         try {
             period = Long.parseLong(args[0]);
             if (period < 0) {
-                sender.sendMessage(ChatColor.RED+"<period>は0以上の数値を指定してください.");
+                sender.sendMessage(ChatColor.RED + "<period>は0以上の数値を指定してください.");
                 return true;
             }
         } catch (NumberFormatException e) {
-            sender.sendMessage(ChatColor.RED+"<period>は0以上の数値を指定してください.");
+            sender.sendMessage(ChatColor.RED + "<period>は0以上の数値を指定してください.");
             return true;
         }
         manager.changeUpdatePointPeriod(period);
-        sender.sendMessage(String.format(ChatColor.GREEN+"PlayerCompassのアップデート間隔を%dに変更しました.",period));
+        sender.sendMessage(String.format(ChatColor.GREEN + "PlayerCompassのアップデート間隔を%dに変更しました.", period));
         return true;
     }
 

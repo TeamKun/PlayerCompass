@@ -5,7 +5,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -43,7 +42,7 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         Map<UUID, Location> lastPoints = data.getLastPoints();
         if (lastPoints != null) {
             for (UUID uuid : lastPoints.keySet()) {
-                manager.registerCompassByUUID(uuid, lastPoints.get(uuid), data.getUpdatePointPeriod());
+                manager.registerCompass(new PlayerCompass(uuid, lastPoints.get(uuid), data.getUpdatePointPeriod()));
             }
         }
 
