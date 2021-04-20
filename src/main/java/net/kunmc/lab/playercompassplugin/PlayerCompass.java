@@ -6,28 +6,22 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
-    private final PlayerCompass instance;
-    private BukkitTask updatePosTask;
+    private BukkitTask updaterTask;
 
     PlayerCompass(Player target) {
         super(Material.COMPASS);
         this.targetUUID = target.getUniqueId();
-        this.instance = this;
 
         CompassMeta compassMeta = ((CompassMeta) this.getItemMeta());
         Location loc = target.getLocation().clone();
-        loc.setY(0);
         compassMeta.setLodestoneTracked(false);
         compassMeta.setLodestone(loc);
 
@@ -38,39 +32,33 @@ public class PlayerCompass extends ItemStack {
 
         setCompassMeta(compassMeta);
 
-        this.updatePosTask = new updatePosTask().runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, PlayerCompassPlugin.getSaveData().getUpdatePosPeriod());
+        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, PlayerCompassPlugin.getData().getUpdatePointPeriod());
     }
 
-    private class updatePosTask extends BukkitRunnable {
-        @Override
-        public void run() {
-            Player target = Bukkit.getPlayer(targetUUID);
-            if (target == null) return;
+    PlayerCompass(UUID targetUUID, Location loc) {
+        super(Material.COMPASS);
+        this.targetUUID = targetUUID;
 
-            Location loc = target.getLocation().clone();
-            loc.setY(0);
-            CompassMeta meta = instance.getCompassMeta();
-            meta.setLodestone(loc);
-            setCompassMeta(meta);
-
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                PlayerInventory inv = p.getInventory();
-                Map<Integer, ? extends ItemStack> oldCompasses = inv.all(Material.COMPASS);
-                if (oldCompasses.isEmpty()) continue;
-
-                for (Map.Entry<Integer, ? extends ItemStack> entry : oldCompasses.entrySet()) {
-                    ItemStack oldCompass = entry.getValue();
-                    if (PlayerCompass.equals(oldCompass,instance)) {
-                        instance.setAmount(oldCompass.getAmount());
-                        p.getInventory().setItem(entry.getKey(), instance);
-                    }
-                }
-                ItemStack offHand = inv.getItemInOffHand();
-                if (PlayerCompass.equals(offHand,instance)) {
-                    inv.setItemInOffHand(instance);
-                }
-            }
+        String targetName;
+        Player target = Bukkit.getPlayer(targetUUID);
+        if (target != null) {
+            targetName = target.getName();
+        } else {
+            targetName = Bukkit.getOfflinePlayer(targetUUID).getName();
         }
+
+        CompassMeta compassMeta = ((CompassMeta) this.getItemMeta());
+        compassMeta.setLodestoneTracked(false);
+        compassMeta.setLodestone(loc);
+
+        Component displayName = Component.text("PlayerCompass(" + targetName + ")");
+        compassMeta.displayName(displayName);
+
+        compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, displayName.toString());
+
+        setCompassMeta(compassMeta);
+
+        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, PlayerCompassPlugin.getData().getUpdatePointPeriod());
     }
 
     public static boolean isPlayerCompass(ItemStack compass) {
@@ -84,22 +72,24 @@ public class PlayerCompass extends ItemStack {
         return data1.equals(data2);
     }
 
-    public void restartUpdatePosTask(PlayerCompassPlugin plugin, long delay, long period) {
-        updatePosTask.cancel();
-        this.updatePosTask = new updatePosTask().runTaskTimerAsynchronously(plugin, delay, period);
+    public void restartUpdaterTask(PlayerCompassPlugin plugin, long delay, long period) {
+        updaterTask.cancel();
+        updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(plugin, delay, period);
     }
 
     public CompassMeta getCompassMeta() {
-        return ((CompassMeta) this.getItemMeta());
+        return ((CompassMeta) getItemMeta());
     }
 
     public void setCompassMeta(CompassMeta meta) {
-        this.setItemMeta(meta);
+        setItemMeta(meta);
     }
 
     public Player getTarget() {
         return Bukkit.getPlayer(targetUUID);
     }
 
-    public UUID getTargetUUID() { return targetUUID; }
+    public UUID getTargetUUID() {
+        return targetUUID;
+    }
 }

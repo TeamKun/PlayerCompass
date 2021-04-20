@@ -1,6 +1,8 @@
 package net.kunmc.lab.playercompassplugin;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.CompassMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,25 +10,45 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayerCompassManager {
-    private final HashMap<UUID, PlayerCompass> compasses = new HashMap<>();
+    private final HashMap<UUID, PlayerCompass> compassesCache = new HashMap<>();
     private final PlayerCompassPlugin plugin = PlayerCompassPlugin.getInstance();
+    private final PlayerCompassPluginData data = PlayerCompassPlugin.getData();
 
-    public void changeUpdatePos1Period(long period) {
-        for (PlayerCompass compass : compasses.values()) {
-            compass.restartUpdatePosTask(plugin, 0, period);
+    public void changeUpdatePointPeriod(long period) {
+        for (PlayerCompass compass : compassesCache.values()) {
+            compass.restartUpdaterTask(plugin, 0, period);
         }
     }
 
-    public PlayerCompass unregisterCompass(UUID uuid) {
-        return compasses.remove(uuid);
-    }
-
     public PlayerCompass getPlayerCompass(Player target) {
-        compasses.putIfAbsent(target.getUniqueId(), new PlayerCompass(target));
-        return compasses.get(target.getUniqueId());
+        compassesCache.putIfAbsent(target.getUniqueId(), new PlayerCompass(target));
+        return compassesCache.get(target.getUniqueId());
     }
 
-    public Collection<PlayerCompass> getRegisteredCompassList() {
-        return new ArrayList<>(compasses.values());
+    public PlayerCompass registerCompassByUUID(UUID targetUUID, Location loc) {
+        compassesCache.putIfAbsent(targetUUID, new PlayerCompass(targetUUID, loc));
+        return compassesCache.get(targetUUID);
+    }
+
+    public void updateCompassPoint(PlayerCompass compass) {
+        Player target = compass.getTarget();
+        Location loc = target.getLocation().clone();
+        CompassMeta meta = compass.getCompassMeta();
+        meta.setLodestone(loc);
+        compass.setCompassMeta(meta);
+        updateCompassCache(target, compass);
+    }
+
+    private void updateCompassCache(Player target, PlayerCompass compass) {
+        updateCompassCache(target.getUniqueId(), compass);
+    }
+
+    private void updateCompassCache(UUID targetUUID, PlayerCompass compass) {
+        compassesCache.put(targetUUID, compass);
+        data.setLastPoint(targetUUID, compass.getCompassMeta().getLodestone());
+    }
+
+    public Collection<PlayerCompass> getCompassList() {
+        return new ArrayList<>(compassesCache.values());
     }
 }

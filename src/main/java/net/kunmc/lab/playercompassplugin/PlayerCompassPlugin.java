@@ -1,14 +1,20 @@
 package net.kunmc.lab.playercompassplugin;
 
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
+    private static PlayerCompassPluginData data;
     private static PlayerCompassPlugin INSTANCE;
     private static NamespacedKey namespacedKey;
     private static PlayerCompassManager manager;
-    private static PlayerCompassPluginSaveData saveData;
+
     public static PlayerCompassManager getManager() {
         return manager;
     }
@@ -21,18 +27,25 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         return namespacedKey;
     }
 
-    public static PlayerCompassPluginSaveData getSaveData() {
-        return saveData;
+    public static PlayerCompassPluginData getData() {
+        return data;
     }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         INSTANCE = this;
+        saveDefaultConfig();
+        data = new PlayerCompassPluginData(getConfig());
         namespacedKey = new NamespacedKey(this, NamespacedKey.BUKKIT);
         manager = new PlayerCompassManager();
-        saveDefaultConfig();
-        saveData = new PlayerCompassPluginSaveData(getConfig());
+
+        Map<UUID, Location> lastPoints = data.getLastPoints();
+        if (lastPoints != null) {
+            for (UUID uuid : lastPoints.keySet()) {
+                manager.registerCompassByUUID(uuid, lastPoints.get(uuid));
+            }
+        }
 
         getServer().getPluginCommand("playercompass").setExecutor(new CompassCommand());
         getServer().getPluginCommand("playerposition").setExecutor(new PositionCommand());
