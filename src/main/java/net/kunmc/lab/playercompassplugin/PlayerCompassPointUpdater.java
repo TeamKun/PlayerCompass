@@ -1,5 +1,6 @@
 package net.kunmc.lab.playercompassplugin;
 
+import net.kyori.adventure.sound.SoundStop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -44,6 +45,21 @@ public class PlayerCompassPointUpdater extends BukkitRunnable {
                 if (PlayerCompass.equals(offHand, compass)) {
                     inv.setItemInOffHand(compass);
                 }
+            }
+        }
+
+        //item_frame内のPlayerCompassを更新
+        List<ItemFrame> itemFrames = Bukkit.selectEntities(compass.getTarget(), "@e[type=item_frame, nbt={Item:{id:\"minecraft:compass\"}}]").stream()
+                .map(x -> ((ItemFrame) x))
+                .filter(x -> PlayerCompass.isPlayerCompass(x.getItem()))
+                .collect(Collectors.toList());
+        for (ItemFrame frame : itemFrames) {
+            ItemStack item = frame.getItem();
+            if (PlayerCompass.isPlayerCompass(item) && PlayerCompass.equals(item, compass)) {
+                ItemMeta meta = item.getItemMeta();
+                ((CompassMeta) meta).setLodestone(compass.getCompassMeta().getLodestone());
+                item.setItemMeta(meta);
+                frame.setItem(item, false);
             }
         }
     }
