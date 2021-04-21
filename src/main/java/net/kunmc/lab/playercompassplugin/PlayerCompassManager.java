@@ -1,5 +1,6 @@
 package net.kunmc.lab.playercompassplugin;
 
+import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.CompassMeta;

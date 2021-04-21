@@ -1,10 +1,10 @@
-package net.kunmc.lab.playercompassplugin;
+package net.kunmc.lab.playercompassplugin.PlayerCompass;
 
-import net.kyori.adventure.sound.SoundStop;
+import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
+import net.kunmc.lab.playercompassplugin.PlayerCompassManager;
+import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PlayerCompassPointUpdater extends BukkitRunnable {
+class PlayerCompassPointUpdater extends BukkitRunnable {
     PlayerCompass compass;
     PlayerCompassManager manager = PlayerCompassPlugin.getManager();
 

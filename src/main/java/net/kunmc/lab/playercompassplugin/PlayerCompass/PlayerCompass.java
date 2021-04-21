@@ -1,5 +1,6 @@
-package net.kunmc.lab.playercompassplugin;
+package net.kunmc.lab.playercompassplugin.PlayerCompass;
 
+import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,7 +17,7 @@ public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
     private BukkitTask updaterTask;
 
-    PlayerCompass(Player target, long updatePeriod) {
+    public PlayerCompass(Player target, long updatePeriod) {
         super(Material.COMPASS);
         this.targetUUID = target.getUniqueId();
 
@@ -35,7 +36,7 @@ public class PlayerCompass extends ItemStack {
         this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod);
     }
 
-    PlayerCompass(UUID targetUUID, Location loc, long updatePeriod) {
+    public PlayerCompass(UUID targetUUID, Location loc, long updatePeriod) {
         super(Material.COMPASS);
         this.targetUUID = targetUUID;
 
