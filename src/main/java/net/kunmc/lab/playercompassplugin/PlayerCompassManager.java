@@ -31,7 +31,8 @@ public class PlayerCompassManager {
     }
 
     public void registerCompass(PlayerCompass compass) {
-        compassesCache.put(compass.getTarget().getUniqueId(), compass);
+        compassesCache.put(compass.getTargetUUID(), compass);
+        data.setLastPoint(compass.getTargetUUID(), compass.getCompassMeta().getLodestone());
     }
 
     public void updateCompassPoint(PlayerCompass compass) {

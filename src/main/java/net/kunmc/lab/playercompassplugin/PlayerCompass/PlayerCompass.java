@@ -55,7 +55,7 @@ public class PlayerCompass extends ItemStack {
         Component displayName = Component.text("PlayerCompass(" + targetName + ")");
         compassMeta.displayName(displayName);
 
-        compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, displayName.toString());
+        compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, targetUUID.toString());
 
         setCompassMeta(compassMeta);
 
