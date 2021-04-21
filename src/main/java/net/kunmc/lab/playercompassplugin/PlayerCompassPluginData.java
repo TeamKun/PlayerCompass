@@ -20,7 +20,7 @@ public class PlayerCompassPluginData {
             public void run() {
                 plugin.saveConfig();
             }
-        }.runTaskTimerAsynchronously(plugin, 0, 20 * 10);
+        }.runTaskTimerAsynchronously(plugin, 0, getSavePeriod());
     }
 
     public long getUpdatePointPeriod() {
@@ -48,6 +48,10 @@ public class PlayerCompassPluginData {
             lastPoints.put(uuid, loc);
         }
         return lastPoints;
+    }
+
+    private long getSavePeriod() {
+        return config.getLong("SavePeriod");
     }
 
     public Location getLastPoint(UUID uuid) {
