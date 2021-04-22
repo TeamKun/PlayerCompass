@@ -12,6 +12,10 @@ commands:
   changeupdateperiod:
     usage: /changeupdateperiod <period>
     permission: playercompass.changeupdateperiod
+  kun:
+    usage:
+  kunxyz:
+    usage:
 
 permissions:
   playercompass.playercompass:

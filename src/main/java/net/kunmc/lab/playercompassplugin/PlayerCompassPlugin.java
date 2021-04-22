@@ -2,10 +2,12 @@ package net.kunmc.lab.playercompassplugin;
 
 import net.kunmc.lab.playercompassplugin.Command.ChangeUpdatePeriodCommand;
 import net.kunmc.lab.playercompassplugin.Command.CompassCommand;
+import net.kunmc.lab.playercompassplugin.Command.ForKunCommand;
 import net.kunmc.lab.playercompassplugin.Command.PositionCommand;
 import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,6 +56,10 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         getServer().getPluginCommand("playerposition").setExecutor(new PositionCommand());
         getServer().getPluginCommand("changeupdateperiod").setExecutor(new ChangeUpdatePeriodCommand());
         getServer().getPluginCommand("changeupdateperiod").setTabCompleter(new ChangeUpdatePeriodCommand());
+
+        CommandExecutor kuncommand = new ForKunCommand();
+        getServer().getPluginCommand("kun").setExecutor(kuncommand);
+        getServer().getPluginCommand("kunxyz").setExecutor(kuncommand);
     }
 
     @Override

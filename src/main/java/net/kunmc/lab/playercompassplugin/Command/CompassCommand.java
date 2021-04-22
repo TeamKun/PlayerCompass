@@ -54,7 +54,6 @@ public class CompassCommand implements CommandExecutor {
         if (displayName.content().equals("PlayerCompass(null)")) {
             meta.displayName(Component.text("PlayerCompass(" + targetName + ")"));
         }
-        Bukkit.getLogger().info(displayName.toString());
         compass.setCompassMeta(meta);
         manager.registerCompass(compass);
         ((Player) sender).getInventory().addItem(compass);
