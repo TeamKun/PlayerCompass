@@ -9,13 +9,18 @@ commands:
   playerposition:
     usage: /playerposition <player>
     permission: playercompass.playerposition
+  playerpositionoff:
+    usage: /playerpositionoff
+    permission: playercompass.playerposition
   changeupdateperiod:
     usage: /changeupdateperiod <period>
     permission: playercompass.changeupdateperiod
   kun:
-    usage:
+    usage: /kun
+    permission: playercompass.kun
   kunxyz:
-    usage:
+    usage: /kunxyz
+    permission: playercompass.kunxyz
 
 permissions:
   playercompass.playercompass:
@@ -23,4 +28,8 @@ permissions:
   playercompass.playerposition:
     default: op
   playercompass.changeupdateperiod:
+    default: op
+  playercompass.kun:
+    default: op
+  playercompass.kunxyz:
     default: op

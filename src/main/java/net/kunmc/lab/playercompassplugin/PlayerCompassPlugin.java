@@ -53,7 +53,9 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         }
 
         getServer().getPluginCommand("playercompass").setExecutor(new CompassCommand());
-        getServer().getPluginCommand("playerposition").setExecutor(new PositionCommand());
+        CommandExecutor positionCommand = new PositionCommand();
+        getServer().getPluginCommand("playerposition").setExecutor(positionCommand);
+        getServer().getPluginCommand("playerpositionoff").setExecutor(positionCommand);
         getServer().getPluginCommand("changeupdateperiod").setExecutor(new ChangeUpdatePeriodCommand());
         getServer().getPluginCommand("changeupdateperiod").setTabCompleter(new ChangeUpdatePeriodCommand());
 

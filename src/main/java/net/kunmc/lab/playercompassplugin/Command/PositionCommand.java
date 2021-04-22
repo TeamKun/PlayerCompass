@@ -1,11 +1,11 @@
 package net.kunmc.lab.playercompassplugin.Command;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,11 +26,17 @@ public class PositionCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0) {
+        Bukkit.getLogger().info(command.getName());
+        if (command.getName().equalsIgnoreCase("playerpositionoff")) {
             UUID uuid = ((Player) sender).getUniqueId();
             BukkitRunnable task = tasks.get(uuid);
             if (task != null) task.cancel();
             sender.sendMessage(ChatColor.GREEN+"座標を非表示にしました.");
+            return true;
+        }
+
+        if (args.length < 1) {
+            sender.sendMessage(ChatColor.RED+"Usage: /playerposition <player>");
             return true;
         }
 
@@ -40,6 +46,9 @@ public class PositionCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + targetName + "はログインしていません.");
             return true;
         }
+
+        BukkitRunnable oldTask = tasks.get(target.getUniqueId());
+        if (oldTask != null) oldTask.cancel();
 
         BukkitRunnable task = new ShowPosTask(sender, target);
         task.runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 10);
