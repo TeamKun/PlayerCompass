@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class ForKunCommand implements CommandExecutor {
     HashMap<UUID, Boolean> isKunPositionShown = new HashMap<>();
-    String kunName = "Maru256";
+    String kunName = "roadhog_kun";
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
