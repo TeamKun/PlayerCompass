@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PositionCommand implements CommandExecutor {
-    private HashMap<UUID, BukkitRunnable> tasks = new HashMap<>();
+    private HashMap<UUID, Integer> taskIDs = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -26,11 +26,10 @@ public class PositionCommand implements CommandExecutor {
             return true;
         }
 
-        Bukkit.getLogger().info(command.getName());
         if (command.getName().equalsIgnoreCase("playerpositionoff")) {
             UUID uuid = ((Player) sender).getUniqueId();
-            BukkitRunnable task = tasks.get(uuid);
-            if (task != null) task.cancel();
+            Integer taskID = taskIDs.get(uuid);
+            if (taskID != null) Bukkit.getScheduler().cancelTask(taskID);
             sender.sendMessage(ChatColor.GREEN+"座標を非表示にしました.");
             return true;
         }
@@ -47,12 +46,12 @@ public class PositionCommand implements CommandExecutor {
             return true;
         }
 
-        BukkitRunnable oldTask = tasks.get(target.getUniqueId());
-        if (oldTask != null) oldTask.cancel();
+        Integer taskID = taskIDs.get(target.getUniqueId());
+        if (taskID != null) Bukkit.getScheduler().cancelTask(taskID);
 
         BukkitRunnable task = new ShowPosTask(sender, target);
         task.runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 10);
-        tasks.put(target.getUniqueId(), task);
+        taskIDs.put(target.getUniqueId(), task.getTaskId());
         sender.sendMessage(ChatColor.GREEN+targetName+"の座標をアクションバーに表示しました.");
         return true;
     }

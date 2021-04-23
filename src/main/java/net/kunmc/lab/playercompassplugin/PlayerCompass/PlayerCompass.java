@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
-    private BukkitTask updaterTask;
+    private Integer updaterTaskID;
 
     public PlayerCompass(Player target, long updatePeriod) {
         super(Material.COMPASS);
@@ -33,7 +33,7 @@ public class PlayerCompass extends ItemStack {
 
         setCompassMeta(compassMeta);
 
-        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod);
+        this.updaterTaskID = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod).getTaskId();
     }
 
     public PlayerCompass(UUID targetUUID, Location loc, long updatePeriod) {
@@ -59,7 +59,7 @@ public class PlayerCompass extends ItemStack {
 
         setCompassMeta(compassMeta);
 
-        this.updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod);
+        this.updaterTaskID = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod).getTaskId();
     }
 
     public static boolean isPlayerCompass(ItemStack compass) {
@@ -74,8 +74,8 @@ public class PlayerCompass extends ItemStack {
     }
 
     public void restartUpdaterTask(PlayerCompassPlugin plugin, long delay, long period) {
-        updaterTask.cancel();
-        updaterTask = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(plugin, delay, period);
+        Bukkit.getScheduler().cancelTask(updaterTaskID);
+        updaterTaskID = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(plugin, delay, period).getTaskId();
     }
 
     public CompassMeta getCompassMeta() {
