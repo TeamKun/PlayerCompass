@@ -22,6 +22,14 @@ public class PlayerCompassManager {
         data.setUpdatePointPeriod(period);
     }
 
+    public boolean compassExists(Player target) {
+        return  compassExists(target.getUniqueId());
+    }
+
+    public boolean compassExists(UUID targetUUID) {
+        return compassesCache.get(targetUUID) != null;
+    }
+
     public PlayerCompass getPlayerCompass(Player target) {
         return getPlayerCompass(target.getUniqueId());
     }

@@ -41,11 +41,17 @@ public class CompassCommand implements CommandExecutor {
             compass = manager.getPlayerCompass(uuid);
             if (compass == null) {
                 compass = new PlayerCompass(uuid, new Location(((Player) sender).getWorld(), 0,0,0), PlayerCompassPlugin.getData().getUpdatePointPeriod());
+            } else {
+                ((Player) sender).getInventory().addItem(compass);
+                return true;
             }
         } else {
             compass = manager.getPlayerCompass(target);
             if (compass == null) {
                 compass = new PlayerCompass(target,PlayerCompassPlugin.getData().getUpdatePointPeriod());
+            } else {
+                ((Player) sender).getInventory().addItem(compass);
+                return true;
             }
         }
 

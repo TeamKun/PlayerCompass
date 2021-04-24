@@ -26,9 +26,9 @@ public class PositionCommand implements CommandExecutor {
             return true;
         }
 
+        UUID senderUUID = ((Player) sender).getUniqueId();
         if (command.getName().equalsIgnoreCase("playerpositionoff")) {
-            UUID uuid = ((Player) sender).getUniqueId();
-            Integer taskID = taskIDs.get(uuid);
+            Integer taskID = taskIDs.get(senderUUID);
             if (taskID != null) Bukkit.getScheduler().cancelTask(taskID);
             sender.sendMessage(ChatColor.GREEN+"座標を非表示にしました.");
             return true;
@@ -50,8 +50,8 @@ public class PositionCommand implements CommandExecutor {
         if (taskID != null) Bukkit.getScheduler().cancelTask(taskID);
 
         BukkitRunnable task = new ShowPosTask(sender, target);
-        task.runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 10);
-        taskIDs.put(target.getUniqueId(), task.getTaskId());
+        task.runTaskTimer(PlayerCompassPlugin.getInstance(), 0, 10);
+        taskIDs.put(senderUUID, task.getTaskId());
         sender.sendMessage(ChatColor.GREEN+targetName+"の座標をアクションバーに表示しました.");
         return true;
     }
