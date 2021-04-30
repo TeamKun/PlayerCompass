@@ -3,15 +3,15 @@ version: ${project.version}
 main: net.kunmc.lab.playercompassplugin.PlayerCompassPlugin
 api-version: 1.16
 commands:
-  playercompass:
-    usage: /playercompass <player>
-    permission: playercompass.playercompass
-  playerposition:
-    usage: /playerposition <player>
-    permission: playercompass.playerposition
-  playerpositionoff:
-    usage: /playerpositionoff
-    permission: playercompass.playerposition
+  compass:
+    usage: /compass <player>
+    permission: playercompass.compass
+  playerpos:
+    usage: /playerpos <player>
+    permission: playercompass.playerpos
+  playerposoff:
+    usage: /playerposoff
+    permission: playercompass.playerpos
   changeupdateperiod:
     usage: /changeupdateperiod <period>
     permission: playercompass.changeupdateperiod
@@ -23,9 +23,9 @@ commands:
     permission: playercompass.kunxyz
 
 permissions:
-  playercompass.playercompass:
+  playercompass.compass:
     default: op
-  playercompass.playerposition:
+  playercompass.playerpos:
     default: op
   playercompass.changeupdateperiod:
     default: op
