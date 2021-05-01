@@ -38,12 +38,12 @@ public class PlayerCompassManager {
 
     public void registerCompass(PlayerCompass compass) {
         compassesCache.put(compass.getTargetUUID(), compass);
-        data.setLastPoint(compass.getTargetUUID(), compass.getCompassMeta().getLodestone());
+        data.setLastPoint(compass.getTargetName(), compass.getCompassMeta().getLodestone());
     }
 
     public void updateCompassCache(PlayerCompass compass) {
         compassesCache.put(compass.getTargetUUID(), compass);
-        data.setLastPoint(compass.getTargetUUID(), compass.getCompassMeta().getLodestone());
+        data.setLastPoint(compass.getTargetName(), compass.getCompassMeta().getLodestone());
     }
 
     public Collection<PlayerCompass> getCompassList() {

@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
+    private final String targetName;
     private Integer updaterTaskID;
 
     public static Component generateDisplayName(String name, Location loc) {
@@ -30,6 +31,7 @@ public class PlayerCompass extends ItemStack {
     public PlayerCompass(Player target, long updatePeriod) {
         super(Material.COMPASS);
         this.targetUUID = target.getUniqueId();
+        this.targetName = target.getName();
 
         CompassMeta compassMeta = ((CompassMeta) this.getItemMeta());
         Location loc = target.getLocation().clone();
@@ -72,6 +74,10 @@ public class PlayerCompass extends ItemStack {
 
     public Player getTarget() {
         return Bukkit.getPlayer(targetUUID);
+    }
+
+    public String getTargetName() {
+        return this.targetName;
     }
 
     public UUID getTargetUUID() {

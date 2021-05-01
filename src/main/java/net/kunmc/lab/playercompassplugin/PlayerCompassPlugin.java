@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
-import java.util.UUID;
 
 public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
     private static PlayerCompassPluginData data;
@@ -44,10 +43,10 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         namespacedKey = new NamespacedKey(this, NamespacedKey.BUKKIT);
         manager = new PlayerCompassManager();
 
-        Map<UUID, Location> lastPoints = data.getLastPoints();
+        Map<String, Location> lastPoints = data.getLastPoints();
         if (lastPoints != null) {
-            for (UUID uuid : lastPoints.keySet()) {
-                FakePlayer p = new FakePlayer(Bukkit.getPlayer(uuid).getName(), uuid, lastPoints.get(uuid));
+            for (String name : lastPoints.keySet()) {
+                FakePlayer p = new FakePlayer(name, Bukkit.getPlayerUniqueId(name), lastPoints.get(name));
                 manager.registerCompass(new PlayerCompass(p, data.getUpdatePointPeriod()));
             }
         }

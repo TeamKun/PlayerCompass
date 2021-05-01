@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class ForKunCommand implements CommandExecutor {
     HashMap<UUID, Boolean> isKunPositionShown = new HashMap<>();
-    String kunName = "Dev";
+    String kunName = "roadhog_kun";
     private final PositionTaskManager manager = PositionTaskManager.getInstance();
 
     @Override

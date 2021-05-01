@@ -7,7 +7,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class PlayerCompassPluginData {
     private final FileConfiguration config;
@@ -37,15 +36,14 @@ public class PlayerCompassPluginData {
         if (needSave) plugin.saveConfig();
     }
 
-    public Map<UUID, Location> getLastPoints() {
+    public Map<String, Location> getLastPoints() {
         MemorySection lastPointsSection = ((MemorySection) config.get("LastPoints"));
         if (lastPointsSection == null) return null;
 
-        Map<UUID, Location> lastPoints = new HashMap<>();
+        Map<String, Location> lastPoints = new HashMap<>();
         for (String key : lastPointsSection.getKeys(false)) {
-            UUID uuid = UUID.fromString(key);
             Location loc = ((Location) lastPointsSection.get(key));
-            lastPoints.put(uuid, loc);
+            lastPoints.put(key, loc);
         }
         return lastPoints;
     }
@@ -54,11 +52,11 @@ public class PlayerCompassPluginData {
         return config.getLong("SavePeriod");
     }
 
-    public Location getLastPoint(UUID uuid) {
-        return config.getLocation("LastPoints." + uuid.toString());
+    public Location getLastPoint(String name) {
+        return config.getLocation("LastPoints." + name);
     }
 
-    public void setLastPoint(UUID uuid, Location loc) {
-        set("LastPoints." + uuid.toString(), loc);
+    public void setLastPoint(String name, Location loc) {
+        set("LastPoints." + name, loc);
     }
 }
