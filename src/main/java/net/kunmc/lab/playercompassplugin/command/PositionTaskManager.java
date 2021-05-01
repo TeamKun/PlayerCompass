@@ -40,18 +40,20 @@ public class PositionTaskManager {
     private class ShowPosTask extends BukkitRunnable {
         CommandSender sender;
         Player target;
+        Location lastLoc;
 
         ShowPosTask(CommandSender sender, Player target) {
             this.sender = sender;
             this.target = target;
+            this.lastLoc = target.getLocation();
         }
 
         @Override
         public void run() {
             if (target.isOnline()) {
-                Location loc = target.getLocation();
-                sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f", target.getName(), loc.getX(), loc.getY(), loc.getZ())));
+                this.lastLoc = target.getLocation();
             }
+            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f", target.getName(), lastLoc.getX(), lastLoc.getY(), lastLoc.getZ())));
         }
 
         public String getTargetName() {
