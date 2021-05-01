@@ -6,7 +6,6 @@ import com.destroystokyo.paper.block.TargetBlockInfo;
 import com.destroystokyo.paper.entity.TargetEntityInfo;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
@@ -49,14 +48,8 @@ import java.util.*;
 
 public class FakePlayer implements Player {
     private String name;
-    private UUID uuid;
-    private Location loc;
-
-    public FakePlayer(Player p) {
-        this.name = p.getName();
-        this.uuid = p.getUniqueId();
-        this.loc = p.getLocation().clone();
-    }
+    private final UUID uuid;
+    private final Location loc;
 
     public FakePlayer(String name, UUID uuid, Location loc) {
         this.name = name;

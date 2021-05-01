@@ -24,24 +24,24 @@ public class ForKunCommand implements CommandExecutor {
         }
 
         switch (command.getName()) {
-            case "kun":{
-                CommandExecutor executor = Bukkit.getPluginCommand("playercompass").getExecutor();
-                command.setName("playercompass");
-                executor.onCommand(sender, command, "playercompass", new String[]{kunName});
-                sender.sendMessage(ChatColor.GREEN+"Kunの方向を指すコンパスを配布しました.");
+            case "kun": {
+                CommandExecutor executor = Bukkit.getPluginCommand("compass").getExecutor();
+                command.setName("compass");
+                executor.onCommand(sender, command, "compass", new String[]{kunName});
+                sender.sendMessage(ChatColor.GREEN + "Kunの方向を指すコンパスを配布しました.");
                 break;
             }
-            case "kunxyz":{
+            case "kunxyz": {
                 UUID uuid = ((Player) sender).getUniqueId();
                 isKunPositionShown.putIfAbsent(uuid, false);
-                CommandExecutor executor = Bukkit.getPluginCommand("playerposition").getExecutor();
+                CommandExecutor executor = Bukkit.getPluginCommand("playerpos").getExecutor();
                 if (isKunPositionShown.get(uuid)) {
-                    executor.onCommand(sender, new PluginsCommand("playerpositionoff"), "playerpositionoff", new String[]{});
+                    executor.onCommand(sender, new PluginsCommand("playerposoff"), "playerposoff", new String[]{});
                     isKunPositionShown.put(uuid, false);
                 } else {
-                    command.setName("playerposition");
-                    executor.onCommand(sender, new PluginsCommand("playerposition"), "playerposition", new String[]{kunName});
-                    sender.sendMessage(ChatColor.GREEN+"非表示にするにはもう一度コマンドを実行してください.");
+                    command.setName("playerpos");
+                    executor.onCommand(sender, new PluginsCommand("playerpos"), "playerpos", new String[]{kunName});
+                    sender.sendMessage(ChatColor.GREEN + "非表示にするにはもう一度コマンドを実行してください.");
                     isKunPositionShown.put(uuid, true);
                 }
                 break;

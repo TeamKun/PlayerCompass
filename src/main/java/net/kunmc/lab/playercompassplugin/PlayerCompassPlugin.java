@@ -1,9 +1,6 @@
 package net.kunmc.lab.playercompassplugin;
 
-import net.kunmc.lab.playercompassplugin.Command.ChangeUpdatePeriodCommand;
-import net.kunmc.lab.playercompassplugin.Command.CompassCommand;
-import net.kunmc.lab.playercompassplugin.Command.ForKunCommand;
-import net.kunmc.lab.playercompassplugin.Command.PositionCommand;
+import net.kunmc.lab.playercompassplugin.Command.*;
 import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.player.FakePlayer;
 import org.bukkit.Bukkit;
@@ -50,15 +47,14 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         Map<UUID, Location> lastPoints = data.getLastPoints();
         if (lastPoints != null) {
             for (UUID uuid : lastPoints.keySet()) {
-                FakePlayer p = new FakePlayer(Bukkit.getPlayer(uuid).getName(), uuid,lastPoints.get(uuid));
+                FakePlayer p = new FakePlayer(Bukkit.getPlayer(uuid).getName(), uuid, lastPoints.get(uuid));
                 manager.registerCompass(new PlayerCompass(p, data.getUpdatePointPeriod()));
             }
         }
 
         getServer().getPluginCommand("compass").setExecutor(new CompassCommand());
-        CommandExecutor positionCommand = new PositionCommand();
-        getServer().getPluginCommand("playerpos").setExecutor(positionCommand);
-        getServer().getPluginCommand("playerposoff").setExecutor(positionCommand);
+        getServer().getPluginCommand("playerpos").setExecutor(new ShowPositionCommand());
+        getServer().getPluginCommand("playerposoff").setExecutor(new HidePositionCommand());
         getServer().getPluginCommand("changeupdateperiod").setExecutor(new ChangeUpdatePeriodCommand());
         getServer().getPluginCommand("changeupdateperiod").setTabCompleter(new ChangeUpdatePeriodCommand());
 
