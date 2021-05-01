@@ -32,7 +32,7 @@ public class CompassCommand implements CommandExecutor {
         if (target == null) {
             UUID uuid = Bukkit.getPlayerUniqueId(targetName);
             if (uuid == null) {
-                sender.sendMessage(ChatColor.RED + targetName + "は存在しません..");
+                sender.sendMessage(ChatColor.RED + targetName + "は存在しません.");
                 return true;
             }
             compass = manager.getPlayerCompass(uuid);

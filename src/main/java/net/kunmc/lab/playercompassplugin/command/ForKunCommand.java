@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.PluginsCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +13,8 @@ import java.util.UUID;
 
 public class ForKunCommand implements CommandExecutor {
     HashMap<UUID, Boolean> isKunPositionShown = new HashMap<>();
-    String kunName = "roadhog_kun";
+    String kunName = "Dev";
+    private final PositionTaskManager manager = PositionTaskManager.getInstance();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
@@ -32,17 +32,25 @@ public class ForKunCommand implements CommandExecutor {
                 break;
             }
             case "kunxyz": {
-                UUID uuid = ((Player) sender).getUniqueId();
-                isKunPositionShown.putIfAbsent(uuid, false);
-                CommandExecutor executor = Bukkit.getPluginCommand("playerpos").getExecutor();
-                if (isKunPositionShown.get(uuid)) {
-                    executor.onCommand(sender, new PluginsCommand("playerposoff"), "playerposoff", new String[]{});
-                    isKunPositionShown.put(uuid, false);
+                Player p = ((Player) sender);
+                UUID senderUUID = p.getUniqueId();
+
+                isKunPositionShown.putIfAbsent(senderUUID, false);
+                if (isKunPositionShown.get(senderUUID)) {
+                    manager.unregister(p);
+                    sender.sendMessage(ChatColor.GREEN + "座標を非表示にしました.");
+                    isKunPositionShown.put(senderUUID, false);
                 } else {
-                    command.setName("playerpos");
-                    executor.onCommand(sender, new PluginsCommand("playerpos"), "playerpos", new String[]{kunName});
+                    Player kun = Bukkit.getPlayer(kunName);
+                    if (kun == null) {
+                        sender.sendMessage(ChatColor.RED + kunName + "はオフラインです.");
+                        return true;
+                    }
+
+                    manager.register(p, kun);
+                    sender.sendMessage(ChatColor.GREEN + kunName + "の座標をアクションバーに表示しました.");
                     sender.sendMessage(ChatColor.GREEN + "非表示にするにはもう一度コマンドを実行してください.");
-                    isKunPositionShown.put(uuid, true);
+                    isKunPositionShown.put(senderUUID, true);
                 }
                 break;
             }
