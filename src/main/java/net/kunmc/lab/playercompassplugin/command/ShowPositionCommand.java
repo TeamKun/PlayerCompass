@@ -26,7 +26,7 @@ public class ShowPositionCommand implements CommandExecutor {
         String targetName = args[0];
         Player target = Bukkit.getPlayer(targetName);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + targetName + "はログインしていません.");
+            sender.sendMessage(ChatColor.RED + targetName + "はオフラインです.");
             return true;
         }
 

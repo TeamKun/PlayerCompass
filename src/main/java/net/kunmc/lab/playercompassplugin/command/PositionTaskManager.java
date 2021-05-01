@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 import java.util.UUID;
 
-class PositionTaskManager {
+public class PositionTaskManager {
     private HashMap<UUID, Integer> taskIDs = new HashMap<>();
     private static final PositionTaskManager singleton = new PositionTaskManager();
 

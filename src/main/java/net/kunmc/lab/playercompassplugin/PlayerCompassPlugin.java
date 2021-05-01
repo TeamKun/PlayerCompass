@@ -61,6 +61,8 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         CommandExecutor kuncommand = new ForKunCommand();
         getServer().getPluginCommand("kun").setExecutor(kuncommand);
         getServer().getPluginCommand("kunxyz").setExecutor(kuncommand);
+
+        getServer().getPluginManager().registerEvents(new CompassClickListener(), this);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.UUID;
@@ -18,6 +19,12 @@ public class PlayerCompass extends ItemStack {
 
     public static Component generateDisplayName(String name, Location loc) {
         return Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", name, loc.getX(), loc.getY(), loc.getZ()));
+    }
+
+    public static UUID getUUIDFromMeta(ItemMeta meta) {
+        String uuidStr = meta.getPersistentDataContainer().get(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING);
+        if (uuidStr == null) return null;
+        return UUID.fromString(uuidStr);
     }
 
     public PlayerCompass(Player target, long updatePeriod) {
