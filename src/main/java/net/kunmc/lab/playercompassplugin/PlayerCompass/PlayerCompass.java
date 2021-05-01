@@ -9,13 +9,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
 public class PlayerCompass extends ItemStack {
     private final UUID targetUUID;
     private Integer updaterTaskID;
+
+    public static Component generateDisplayName(String name, Location loc) {
+       return Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", name, loc.getX(), loc.getY(), loc.getZ()));
+    }
 
     public PlayerCompass(Player target, long updatePeriod) {
         super(Material.COMPASS);
@@ -26,7 +29,7 @@ public class PlayerCompass extends ItemStack {
         compassMeta.setLodestoneTracked(false);
         compassMeta.setLodestone(loc);
 
-        Component displayName = Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", target.getName(), loc.getX(), loc.getY(), loc.getZ()));
+        Component displayName = generateDisplayName(target.getName(), loc);
         compassMeta.displayName(displayName);
 
         compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, target.getUniqueId().toString());

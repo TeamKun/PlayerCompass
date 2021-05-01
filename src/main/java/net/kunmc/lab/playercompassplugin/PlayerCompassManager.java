@@ -1,9 +1,7 @@
 package net.kunmc.lab.playercompassplugin;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.CompassMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +21,7 @@ public class PlayerCompassManager {
     }
 
     public boolean compassExists(Player target) {
-        return  compassExists(target.getUniqueId());
+        return compassExists(target.getUniqueId());
     }
 
     public boolean compassExists(UUID targetUUID) {
@@ -43,22 +41,9 @@ public class PlayerCompassManager {
         data.setLastPoint(compass.getTargetUUID(), compass.getCompassMeta().getLodestone());
     }
 
-    public void updateCompassPoint(PlayerCompass compass) {
-        Player target = compass.getTarget();
-        Location loc = target.getLocation().clone();
-        CompassMeta meta = compass.getCompassMeta();
-        meta.setLodestone(loc);
-        compass.setCompassMeta(meta);
-        updateCompassCache(target, compass);
-    }
-
-    private void updateCompassCache(Player target, PlayerCompass compass) {
-        updateCompassCache(target.getUniqueId(), compass);
-    }
-
-    private void updateCompassCache(UUID targetUUID, PlayerCompass compass) {
-        compassesCache.put(targetUUID, compass);
-        data.setLastPoint(targetUUID, compass.getCompassMeta().getLodestone());
+    public void updateCompassCache(PlayerCompass compass) {
+        compassesCache.put(compass.getTargetUUID(), compass);
+        data.setLastPoint(compass.getTargetUUID(), compass.getCompassMeta().getLodestone());
     }
 
     public Collection<PlayerCompass> getCompassList() {

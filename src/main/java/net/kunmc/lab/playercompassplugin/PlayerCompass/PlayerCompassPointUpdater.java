@@ -1,16 +1,15 @@
 package net.kunmc.lab.playercompassplugin.PlayerCompass;
 
-import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.PlayerCompassManager;
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.CompassMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -28,7 +27,13 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
     @Override
     public void run() {
         if (Bukkit.getPlayer(compass.getTargetUUID()) == null) return;
-        manager.updateCompassPoint(compass);
+        Player target = compass.getTarget();
+        Location loc = target.getLocation().clone();
+        CompassMeta compassMeta = compass.getCompassMeta();
+        compassMeta.setLodestone(loc);
+        compassMeta.displayName(PlayerCompass.generateDisplayName(target.getName(), loc));
+        compass.setCompassMeta(compassMeta);
+        manager.updateCompassCache(compass);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             PlayerInventory inv = p.getInventory();
@@ -41,6 +46,7 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
                         p.getInventory().setItem(entry.getKey(), compass);
                     }
                 }
+
                 ItemStack offHand = inv.getItemInOffHand();
                 if (PlayerCompass.equals(offHand, compass)) {
                     inv.setItemInOffHand(compass);
@@ -56,10 +62,8 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
         for (ItemFrame frame : itemFrames) {
             ItemStack item = frame.getItem();
             if (PlayerCompass.isPlayerCompass(item) && PlayerCompass.equals(item, compass)) {
-                ItemMeta meta = item.getItemMeta();
-                ((CompassMeta) meta).setLodestone(compass.getCompassMeta().getLodestone());
-                item.setItemMeta(meta);
-                frame.setItem(item, false);
+                frame.setItem(compass, false);
+                frame.setCustomName(compassMeta.displayName().toString());
             }
         }
     }
