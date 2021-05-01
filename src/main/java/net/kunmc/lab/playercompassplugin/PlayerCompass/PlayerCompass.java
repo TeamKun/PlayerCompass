@@ -26,36 +26,10 @@ public class PlayerCompass extends ItemStack {
         compassMeta.setLodestoneTracked(false);
         compassMeta.setLodestone(loc);
 
-        Component displayName = Component.text("PlayerCompass(" + target.getName() + ")");
+        Component displayName = Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", target.getName(), loc.getX(), loc.getY(), loc.getZ()));
         compassMeta.displayName(displayName);
 
-        compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, displayName.toString());
-
-        setCompassMeta(compassMeta);
-
-        this.updaterTaskID = new PlayerCompassPointUpdater(this).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, updatePeriod).getTaskId();
-    }
-
-    public PlayerCompass(UUID targetUUID, Location loc, long updatePeriod) {
-        super(Material.COMPASS);
-        this.targetUUID = targetUUID;
-
-        String targetName;
-        Player target = Bukkit.getPlayer(targetUUID);
-        if (target != null) {
-            targetName = target.getName();
-        } else {
-            targetName = Bukkit.getOfflinePlayer(targetUUID).getName();
-        }
-
-        CompassMeta compassMeta = ((CompassMeta) this.getItemMeta());
-        compassMeta.setLodestoneTracked(false);
-        compassMeta.setLodestone(loc);
-
-        Component displayName = Component.text("PlayerCompass(" + targetName + ")");
-        compassMeta.displayName(displayName);
-
-        compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, targetUUID.toString());
+        compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, target.getUniqueId().toString());
 
         setCompassMeta(compassMeta);
 

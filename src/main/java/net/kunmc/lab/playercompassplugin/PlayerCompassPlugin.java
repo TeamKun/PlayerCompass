@@ -5,6 +5,8 @@ import net.kunmc.lab.playercompassplugin.Command.CompassCommand;
 import net.kunmc.lab.playercompassplugin.Command.ForKunCommand;
 import net.kunmc.lab.playercompassplugin.Command.PositionCommand;
 import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
+import net.kunmc.lab.playercompassplugin.player.FakePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
@@ -48,7 +50,8 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         Map<UUID, Location> lastPoints = data.getLastPoints();
         if (lastPoints != null) {
             for (UUID uuid : lastPoints.keySet()) {
-                manager.registerCompass(new PlayerCompass(uuid, lastPoints.get(uuid), data.getUpdatePointPeriod()));
+                FakePlayer p = new FakePlayer(Bukkit.getPlayer(uuid).getName(), uuid,lastPoints.get(uuid));
+                manager.registerCompass(new PlayerCompass(p, data.getUpdatePointPeriod()));
             }
         }
 

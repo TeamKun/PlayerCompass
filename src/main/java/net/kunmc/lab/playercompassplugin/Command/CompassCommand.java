@@ -3,6 +3,7 @@ package net.kunmc.lab.playercompassplugin.Command;
 import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.PlayerCompassManager;
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
+import net.kunmc.lab.playercompassplugin.player.FakePlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
@@ -40,7 +41,8 @@ public class CompassCommand implements CommandExecutor {
             }
             compass = manager.getPlayerCompass(uuid);
             if (compass == null) {
-                compass = new PlayerCompass(uuid, new Location(((Player) sender).getWorld(), 0,0,0), PlayerCompassPlugin.getData().getUpdatePointPeriod());
+                FakePlayer p = new FakePlayer(targetName, uuid, new Location(((Player) sender).getWorld(), 0,0,0));
+                compass = new PlayerCompass(p, PlayerCompassPlugin.getData().getUpdatePointPeriod());
             } else {
                 ((Player) sender).getInventory().addItem(compass);
                 return true;
@@ -55,12 +57,6 @@ public class CompassCommand implements CommandExecutor {
             }
         }
 
-        CompassMeta meta = compass.getCompassMeta();
-        TextComponent displayName = ((TextComponent) meta.displayName());
-        if (displayName.content().equals("PlayerCompass(null)")) {
-            meta.displayName(Component.text("PlayerCompass(" + targetName + ")"));
-        }
-        compass.setCompassMeta(meta);
         manager.registerCompass(compass);
         ((Player) sender).getInventory().addItem(compass);
         return true;
