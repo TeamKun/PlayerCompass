@@ -1,6 +1,6 @@
 package net.kunmc.lab.playercompassplugin;
 
-import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
+import net.kunmc.lab.playercompassplugin.compass.PlayerCompass;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

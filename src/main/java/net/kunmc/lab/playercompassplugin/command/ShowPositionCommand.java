@@ -1,4 +1,4 @@
-package net.kunmc.lab.playercompassplugin.Command;
+package net.kunmc.lab.playercompassplugin.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

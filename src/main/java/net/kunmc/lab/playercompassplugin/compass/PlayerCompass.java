@@ -1,4 +1,4 @@
-package net.kunmc.lab.playercompassplugin.PlayerCompass;
+package net.kunmc.lab.playercompassplugin.compass;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import net.kyori.adventure.text.Component;
@@ -17,7 +17,7 @@ public class PlayerCompass extends ItemStack {
     private Integer updaterTaskID;
 
     public static Component generateDisplayName(String name, Location loc) {
-       return Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", name, loc.getX(), loc.getY(), loc.getZ()));
+        return Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", name, loc.getX(), loc.getY(), loc.getZ()));
     }
 
     public PlayerCompass(Player target, long updatePeriod) {

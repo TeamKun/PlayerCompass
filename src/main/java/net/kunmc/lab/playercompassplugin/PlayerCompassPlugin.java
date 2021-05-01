@@ -1,7 +1,7 @@
 package net.kunmc.lab.playercompassplugin;
 
-import net.kunmc.lab.playercompassplugin.Command.*;
-import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
+import net.kunmc.lab.playercompassplugin.command.*;
+import net.kunmc.lab.playercompassplugin.compass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.player.FakePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

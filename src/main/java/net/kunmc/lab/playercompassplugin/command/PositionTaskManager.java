@@ -1,4 +1,4 @@
-package net.kunmc.lab.playercompassplugin.Command;
+package net.kunmc.lab.playercompassplugin.command;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import net.kyori.adventure.text.Component;

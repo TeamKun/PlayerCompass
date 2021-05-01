@@ -1,8 +1,8 @@
-package net.kunmc.lab.playercompassplugin.Command;
+package net.kunmc.lab.playercompassplugin.command;
 
-import net.kunmc.lab.playercompassplugin.PlayerCompass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.PlayerCompassManager;
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
+import net.kunmc.lab.playercompassplugin.compass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.player.FakePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

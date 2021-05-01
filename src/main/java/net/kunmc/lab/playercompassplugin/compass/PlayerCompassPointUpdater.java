@@ -1,4 +1,4 @@
-package net.kunmc.lab.playercompassplugin.PlayerCompass;
+package net.kunmc.lab.playercompassplugin.compass;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompassManager;
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
