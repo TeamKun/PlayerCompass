@@ -42,6 +42,9 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
                 for (Map.Entry<Integer, ? extends ItemStack> entry : oldCompasses.entrySet()) {
                     ItemStack oldCompass = entry.getValue();
                     if (PlayerCompass.equals(oldCompass, compass)) {
+                        CompassMeta meta = compass.getCompassMeta();
+                        meta.displayName(PlayerCompass.generateDisplayNameWithPlaneDistance(target.getName(), loc, p.getLocation()));
+                        compass.setCompassMeta(meta);
                         compass.setAmount(oldCompass.getAmount());
                         p.getInventory().setItem(entry.getKey(), compass);
                     }

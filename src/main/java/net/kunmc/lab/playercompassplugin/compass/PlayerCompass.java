@@ -3,6 +3,7 @@ package net.kunmc.lab.playercompassplugin.compass;
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +20,16 @@ public class PlayerCompass extends ItemStack {
     private Integer updaterTaskID;
 
     public static Component generateDisplayName(String name, Location loc) {
-        return Component.text(String.format("%s( X:%.0f Y:%.0f Z:%.0f )", name, loc.getX(), loc.getY(), loc.getZ()));
+        return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f )", ChatColor.WHITE, name, loc.getX(), loc.getY(), loc.getZ()));
+    }
+
+    public static Component generateDisplayNameWithPlaneDistance(String name, Location dstLoc, Location srcLoc) {
+        Location loc1 = dstLoc.clone();
+        loc1.setY(0);
+        Location loc2 = srcLoc.clone();
+        loc2.setY(0);
+        double distance = loc1.distance(loc2);
+        return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f 距離:%.0f)", ChatColor.WHITE, name, dstLoc.getX(), dstLoc.getY(), dstLoc.getZ(), distance));
     }
 
     public static UUID getUUIDFromMeta(ItemMeta meta) {
