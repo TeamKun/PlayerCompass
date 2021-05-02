@@ -12,6 +12,8 @@ import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerCompass extends ItemStack {
@@ -50,6 +52,11 @@ public class PlayerCompass extends ItemStack {
 
         Component displayName = generateDisplayName(target.getName(), loc);
         compassMeta.displayName(displayName);
+
+        List<Component> lore = new ArrayList<>();
+        lore.add(Component.text(ChatColor.WHITE + "右クリックをすることで対象の座標がActinobarに表示され,また対象が発光します."));
+        lore.add(Component.text(ChatColor.WHITE + "もう一度右クリックをするとそれらを非表示にすることが出来ます."));
+        compassMeta.lore(lore);
 
         compassMeta.getPersistentDataContainer().set(PlayerCompassPlugin.getNamespacedKey(), PersistentDataType.STRING, target.getUniqueId().toString());
 
