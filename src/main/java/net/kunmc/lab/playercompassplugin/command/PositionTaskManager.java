@@ -4,7 +4,6 @@ import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -38,11 +37,11 @@ public class PositionTaskManager {
     }
 
     private class ShowPosTask extends BukkitRunnable {
-        CommandSender sender;
+        Player sender;
         Player target;
         Location lastLoc;
 
-        ShowPosTask(CommandSender sender, Player target) {
+        ShowPosTask(Player sender, Player target) {
             this.sender = sender;
             this.target = target;
             this.lastLoc = target.getLocation();
@@ -53,11 +52,19 @@ public class PositionTaskManager {
             if (target.isOnline()) {
                 this.lastLoc = target.getLocation();
             }
-            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f", target.getName(), lastLoc.getX(), lastLoc.getY(), lastLoc.getZ())));
+            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0f", target.getName(), lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), calcPlaneDistance(sender.getLocation(), lastLoc))));
         }
 
         public String getTargetName() {
             return target.getName();
+        }
+
+        private double calcPlaneDistance(Location loc1, Location loc2) {
+            Location loc1c = loc1.clone();
+            loc1c.setY(0);
+            Location loc2c = loc2.clone();
+            loc2c.setY(0);
+            return loc1c.distance(loc2c);
         }
     }
 }
