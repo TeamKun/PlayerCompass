@@ -31,7 +31,7 @@ public class PlayerCompass extends ItemStack {
         Location loc2 = srcLoc.clone();
         loc2.setY(0);
         double distance = loc1.distance(loc2);
-        return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f 距離:%.0f)", ChatColor.WHITE, name, dstLoc.getX(), dstLoc.getY(), dstLoc.getZ(), distance));
+        return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f 距離:%.0f )", ChatColor.WHITE, name, dstLoc.getX(), dstLoc.getY(), dstLoc.getZ(), distance));
     }
 
     public static UUID getUUIDFromMeta(ItemMeta meta) {
