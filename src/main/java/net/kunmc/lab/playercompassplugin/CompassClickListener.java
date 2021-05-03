@@ -41,7 +41,7 @@ public class CompassClickListener implements Listener {
         statuses.putIfAbsent(senderUUID, new PosStatus(newTargetName, false));
         String oldTargetName = statuses.get(senderUUID).targetName;
         Player oldTarget = Bukkit.getPlayer(oldTargetName);
-        
+
         if (statuses.get(senderUUID).isShown && oldTargetName.equals(newTargetName)) {
             manager.unregister(sender);
             sender.sendMessage(ChatColor.GREEN + "座標を非表示にしました.");
@@ -50,10 +50,7 @@ public class CompassClickListener implements Listener {
             if (oldTarget != null) oldTarget.setGlowing(false);
             statuses.get(senderUUID).isShown = false;
         } else {
-            if (oldTarget != null) {
-                oldTarget.setGlowing(false);
-                sender.sendMessage(ChatColor.GREEN + oldTargetName + "の発光をオフにしました.");
-            }
+            if (oldTarget != null) oldTarget.setGlowing(false);
 
             Player newTarget = Bukkit.getPlayer(newTargetName);
             if (newTarget == null) {
