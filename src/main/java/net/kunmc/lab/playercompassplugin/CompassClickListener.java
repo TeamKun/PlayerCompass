@@ -69,8 +69,7 @@ public class CompassClickListener implements Listener {
                 return;
             }
             manager.register(sender, newTarget);
-            //setGlowing(sender, newTarget, true);
-            BukkitTask task = new ForceGlowTask(sender, newTarget).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 4);
+            BukkitTask task = new ForceGlowTask(sender.getName(), newTarget.getName()).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 4);
             forceGlowTasks.put(senderUUID, task);
             sender.sendMessage(ChatColor.GREEN + newTargetName + "の座標をアクションバーに表示しました.");
             sender.sendMessage(ChatColor.GREEN + newTargetName + "を光らせました.");
@@ -105,16 +104,19 @@ public class CompassClickListener implements Listener {
     }
 
     private class ForceGlowTask extends BukkitRunnable {
-        Player sender;
-        Player target;
+        String senderName;
+        String targetName;
 
-        ForceGlowTask(Player sender, Player target) {
-            this.sender = sender;
-            this.target = target;
+        ForceGlowTask(String senderName, String targetName) {
+            this.senderName = senderName;
+            this.targetName = targetName;
         }
 
         @Override
         public void run() {
+            Player sender = Bukkit.getPlayer(senderName);
+            Player target = Bukkit.getPlayer(targetName);
+            if (sender == null || target == null) return;
             setGlowing(sender, target, true);
         }
     }

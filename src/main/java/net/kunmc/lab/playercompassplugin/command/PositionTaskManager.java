@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class PositionTaskManager {
-    private HashMap<UUID, Integer> taskIDs = new HashMap<>();
+    private final HashMap<UUID, Integer> taskIDs = new HashMap<>();
     private static final PositionTaskManager singleton = new PositionTaskManager();
 
     public static PositionTaskManager getInstance() {
@@ -26,7 +26,7 @@ public class PositionTaskManager {
         Integer oldTaskID = taskIDs.get(sender.getUniqueId());
         if (oldTaskID != null) Bukkit.getScheduler().cancelTask(oldTaskID);
 
-        BukkitTask newTask = new ShowPosTask(sender, target).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 8);
+        BukkitTask newTask = new ShowPosTask(sender.getName(), target.getName()).runTaskTimerAsynchronously(PlayerCompassPlugin.getInstance(), 0, 8);
         taskIDs.put(sender.getUniqueId(), newTask.getTaskId());
     }
 
@@ -37,26 +37,23 @@ public class PositionTaskManager {
     }
 
     private class ShowPosTask extends BukkitRunnable {
-        Player sender;
-        Player target;
+        String senderName;
+        String targetName;
         Location lastLoc;
 
-        ShowPosTask(Player sender, Player target) {
-            this.sender = sender;
-            this.target = target;
-            this.lastLoc = target.getLocation();
+        ShowPosTask(String senderName, String targetName) {
+            this.senderName = senderName;
+            this.targetName = targetName;
         }
 
         @Override
         public void run() {
-            if (target.isOnline()) {
-                this.lastLoc = target.getLocation();
-            }
-            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0f", target.getName(), lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), calcPlaneDistance(sender.getLocation(), lastLoc))));
-        }
+            Player sender = Bukkit.getPlayer(senderName);
+            if (sender == null) return;
+            Player target = Bukkit.getPlayer(targetName);
+            if (target != null) this.lastLoc = target.getLocation();
 
-        public String getTargetName() {
-            return target.getName();
+            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0f", target.getName(), lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), calcPlaneDistance(sender.getLocation(), lastLoc))));
         }
 
         private double calcPlaneDistance(Location loc1, Location loc2) {
