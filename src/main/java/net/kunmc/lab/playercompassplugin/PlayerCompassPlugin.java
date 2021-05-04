@@ -1,5 +1,7 @@
 package net.kunmc.lab.playercompassplugin;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import net.kunmc.lab.playercompassplugin.command.*;
 import net.kunmc.lab.playercompassplugin.compass.PlayerCompass;
 import net.kunmc.lab.playercompassplugin.player.FakePlayer;
@@ -17,6 +19,7 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
     private static PlayerCompassPlugin INSTANCE;
     private static NamespacedKey namespacedKey;
     private static PlayerCompassManager manager;
+    private static ProtocolManager protocolManager;
 
     public static PlayerCompassManager getManager() {
         return manager;
@@ -34,6 +37,10 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         return data;
     }
 
+    public static ProtocolManager getProtocolManager() {
+        return protocolManager;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -42,6 +49,7 @@ public final class PlayerCompassPlugin extends JavaPlugin implements Listener {
         data = new PlayerCompassPluginData(getConfig());
         namespacedKey = new NamespacedKey(this, NamespacedKey.BUKKIT);
         manager = new PlayerCompassManager();
+        protocolManager = ProtocolLibrary.getProtocolManager();
 
         Map<String, Location> lastPoints = data.getLastPoints();
         if (lastPoints != null) {
