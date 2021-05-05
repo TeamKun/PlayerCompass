@@ -2,6 +2,7 @@ name: PlayerCompassPlugin
 version: ${project.version}
 main: net.kunmc.lab.playercompassplugin.PlayerCompassPlugin
 api-version: 1.16
+depend: [ ProtocolLib ]
 commands:
   compass:
     usage: /compass <player>

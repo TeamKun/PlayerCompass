@@ -87,7 +87,7 @@ public class CompassClickListener implements Listener {
             this.isShown = isShown;
         }
     }
-
+    
     private void setGlowing(Player sender, Player target, boolean b) {
         PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         packetContainer.getIntegers().write(0, target.getEntityId());
