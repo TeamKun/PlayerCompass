@@ -1,6 +1,7 @@
 package net.kunmc.lab.playercompassplugin.compass;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
+import net.kunmc.lab.playercompassplugin.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,12 +27,13 @@ public class PlayerCompass extends ItemStack {
     }
 
     public static Component generateDisplayNameWithPlaneDistance(String name, Location dstLoc, Location srcLoc) {
-        Location loc1 = dstLoc.clone();
-        loc1.setY(0);
-        Location loc2 = srcLoc.clone();
-        loc2.setY(0);
-        double distance = loc1.distance(loc2);
-        return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f 距離:%.0fm )", ChatColor.WHITE, name, dstLoc.getX(), dstLoc.getY(), dstLoc.getZ(), distance));
+        try {
+            double distance = Utils.calcPlaneDistance(dstLoc, srcLoc);
+            return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f 距離:%.0fm )", ChatColor.WHITE, name, dstLoc.getX(), dstLoc.getY(), dstLoc.getZ(), distance));
+        } catch (IllegalArgumentException e) {
+            String worldName = Utils.convertWorldName(dstLoc.getWorld().getName());
+            return Component.text(String.format("%s%s( X:%.0f Y:%.0f Z:%.0f %sに居ます )", ChatColor.WHITE, name, dstLoc.getX(), dstLoc.getY(), dstLoc.getZ(), worldName));
+        }
     }
 
     public static UUID getUUIDFromMeta(ItemMeta meta) {

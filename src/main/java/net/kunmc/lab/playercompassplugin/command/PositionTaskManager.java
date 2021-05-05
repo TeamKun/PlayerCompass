@@ -1,6 +1,7 @@
 package net.kunmc.lab.playercompassplugin.command;
 
 import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
+import net.kunmc.lab.playercompassplugin.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -53,15 +54,13 @@ public class PositionTaskManager {
             Player target = Bukkit.getPlayer(targetName);
             if (target != null) this.lastLoc = target.getLocation();
 
-            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0fm", targetName, lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), calcPlaneDistance(sender.getLocation(), lastLoc))));
-        }
-
-        private double calcPlaneDistance(Location loc1, Location loc2) {
-            Location loc1c = loc1.clone();
-            loc1c.setY(0);
-            Location loc2c = loc2.clone();
-            loc2c.setY(0);
-            return loc1c.distance(loc2c);
+            try {
+                double distance = Utils.calcPlaneDistance(sender.getLocation(), lastLoc);
+                sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0fm", targetName, lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), distance)));
+            } catch (IllegalArgumentException ignore) {
+                String worldName = Utils.convertWorldName(lastLoc.getWorld().getName());
+                sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f %sに居ます", targetName, lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), worldName)));
+            }
         }
     }
 }
