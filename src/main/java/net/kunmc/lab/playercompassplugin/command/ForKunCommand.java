@@ -1,5 +1,6 @@
 package net.kunmc.lab.playercompassplugin.command;
 
+import net.kunmc.lab.playercompassplugin.PlayerCompassPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 public class ForKunCommand implements CommandExecutor {
     HashMap<UUID, Boolean> isKunPositionShown = new HashMap<>();
-    String kunName = "roadhog_kun";
+    String KunName = PlayerCompassPlugin.getData().getKunName();
     private final PositionTaskManager manager = PositionTaskManager.getInstance();
 
     @Override
@@ -27,7 +28,7 @@ public class ForKunCommand implements CommandExecutor {
             case "kun": {
                 CommandExecutor executor = Bukkit.getPluginCommand("compass").getExecutor();
                 command.setName("compass");
-                executor.onCommand(sender, command, "compass", new String[]{kunName});
+                executor.onCommand(sender, command, "compass", new String[]{KunName});
                 sender.sendMessage(ChatColor.GREEN + "Kunの方向を指すコンパスを配布しました.");
                 break;
             }
@@ -41,14 +42,14 @@ public class ForKunCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.GREEN + "座標を非表示にしました.");
                     isKunPositionShown.put(senderUUID, false);
                 } else {
-                    Player kun = Bukkit.getPlayer(kunName);
+                    Player kun = Bukkit.getPlayer(KunName);
                     if (kun == null) {
-                        sender.sendMessage(ChatColor.RED + kunName + "はオフラインです.");
+                        sender.sendMessage(ChatColor.RED + KunName + "はオフラインです.");
                         return true;
                     }
 
                     manager.register(p, kun);
-                    sender.sendMessage(ChatColor.GREEN + kunName + "の座標をアクションバーに表示しました.");
+                    sender.sendMessage(ChatColor.GREEN + KunName + "の座標をアクションバーに表示しました.");
                     sender.sendMessage(ChatColor.GREEN + "非表示にするにはもう一度コマンドを実行してください.");
                     isKunPositionShown.put(senderUUID, true);
                 }

@@ -52,6 +52,10 @@ public class PlayerCompassPluginData {
         return config.getLong("SavePeriod");
     }
 
+    public String getKunName() {
+        return config.getString("KunName");
+    }
+
     public Location getLastPoint(String name) {
         return config.getLocation("LastPoints." + name);
     }
