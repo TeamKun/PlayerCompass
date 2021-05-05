@@ -53,7 +53,7 @@ public class PositionTaskManager {
             Player target = Bukkit.getPlayer(targetName);
             if (target != null) this.lastLoc = target.getLocation();
 
-            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0f", targetName, lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), calcPlaneDistance(sender.getLocation(), lastLoc))));
+            sender.sendActionBar(Component.text(String.format("%sの座標 X:%.0f Y:%.0f Z:%.0f 距離:%.0fm", targetName, lastLoc.getX(), lastLoc.getY(), lastLoc.getZ(), calcPlaneDistance(sender.getLocation(), lastLoc))));
         }
 
         private double calcPlaneDistance(Location loc1, Location loc2) {
