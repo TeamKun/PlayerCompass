@@ -54,7 +54,7 @@ public class PlayerCompass extends ItemStack {
         compassMeta.displayName(displayName);
 
         List<Component> lore = new ArrayList<>();
-        lore.add(Component.text(ChatColor.WHITE + "右クリックをすることで対象の座標がActinobarに表示され,また対象が発光します."));
+        lore.add(Component.text(ChatColor.WHITE + "右クリックをすることで対象の座標がアクションバーに表示され,また対象が発光します."));
         lore.add(Component.text(ChatColor.WHITE + "もう一度右クリックをするとそれらを非表示にすることが出来ます."));
         compassMeta.lore(lore);
 
