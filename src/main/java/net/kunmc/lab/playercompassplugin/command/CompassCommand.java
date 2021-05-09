@@ -27,32 +27,26 @@ public class CompassCommand implements CommandExecutor {
         }
 
         String targetName = args[0];
-        Player target = Bukkit.getPlayer(targetName);
-        PlayerCompass compass;
-        if (target == null) {
-            UUID uuid = Bukkit.getPlayerUniqueId(targetName);
-            if (uuid == null) {
-                sender.sendMessage(ChatColor.RED + targetName + "は存在しません.");
-                return true;
-            }
-            compass = manager.getPlayerCompass(uuid);
-            if (compass == null) {
-                FakePlayer p = new FakePlayer(targetName, uuid, new Location(((Player) sender).getWorld(), 0, 0, 0));
-                compass = new PlayerCompass(p, PlayerCompassPlugin.getData().getUpdatePointPeriod());
-            } else {
-                ((Player) sender).getInventory().addItem(compass);
-                return true;
-            }
-        } else {
-            compass = manager.getPlayerCompass(target);
-            if (compass == null) {
-                compass = new PlayerCompass(target, PlayerCompassPlugin.getData().getUpdatePointPeriod());
-            } else {
-                ((Player) sender).getInventory().addItem(compass);
-                return true;
-            }
+        UUID uuid = Bukkit.getPlayerUniqueId(targetName);
+        if (uuid == null) {
+            sender.sendMessage(ChatColor.RED + targetName + "は存在しません.");
+            return true;
         }
 
+        PlayerCompass compass = manager.getPlayerCompass(uuid);
+        if (compass != null) {
+            ((Player) sender).getInventory().addItem(compass);
+            return true;
+        }
+
+        Player target = Bukkit.getPlayer(uuid);
+        if (target == null) {
+            FakePlayer p = new FakePlayer(targetName, uuid, new Location(((Player) sender).getWorld(), 0, 0, 0));
+            compass = new PlayerCompass(p, PlayerCompassPlugin.getData().getUpdatePointPeriod());
+        } else {
+            compass = new PlayerCompass(target, PlayerCompassPlugin.getData().getUpdatePointPeriod());
+        }
+        
         manager.registerCompass(compass);
         ((Player) sender).getInventory().addItem(compass);
         return true;
