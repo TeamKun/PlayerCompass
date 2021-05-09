@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -28,8 +29,7 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
 
     @Override
     public void run() {
-        Player target = compass.getTarget();
-        if (target != null) this.lastLoc = target.getLocation();
+        if (compass.getTarget() != null) this.lastLoc = compass.getTarget().getLocation();
         CompassMeta compassMeta = compass.getCompassMeta();
         compassMeta.setLodestone(lastLoc);
         compassMeta.displayName(PlayerCompass.generateDisplayName(compass.getTargetName(), lastLoc));
@@ -59,15 +59,20 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
         }
 
         //item_frame内のPlayerCompassを更新
-        List<ItemFrame> itemFrames = Bukkit.selectEntities(compass.getTarget(), "@e[type=item_frame, nbt={Item:{id:\"minecraft:compass\"}}]").stream()
+        Player target = compass.getTarget();
+        if (target == null) return;
+        List<ItemFrame> itemFrames = Bukkit.selectEntities(target, "@e[type=item_frame, nbt={Item:{id:\"minecraft:compass\"}}]").stream()
                 .map(x -> ((ItemFrame) x))
                 .filter(x -> PlayerCompass.isPlayerCompass(x.getItem()))
                 .collect(Collectors.toList());
         for (ItemFrame frame : itemFrames) {
             ItemStack item = frame.getItem();
             if (PlayerCompass.isPlayerCompass(item) && PlayerCompass.equals(item, compass)) {
+                ItemMeta meta = compass.getItemMeta();
+                meta.displayName(PlayerCompass.generateDisplayName(target.getName(), target.getLocation()));
+                compass.setItemMeta(meta);
                 frame.setItem(compass, false);
-                frame.setCustomName(compassMeta.displayName().toString());
+                frame.setCustomName(meta.displayName().toString());
             }
         }
     }
