@@ -18,20 +18,21 @@ import java.util.stream.Collectors;
 
 class PlayerCompassPointUpdater extends BukkitRunnable {
     PlayerCompass compass;
+    Location lastLoc;
     PlayerCompassManager manager = PlayerCompassPlugin.getManager();
 
     PlayerCompassPointUpdater(PlayerCompass compass) {
         this.compass = compass;
+        this.lastLoc = compass.getCompassMeta().getLodestone();
     }
 
     @Override
     public void run() {
-        if (Bukkit.getPlayer(compass.getTargetUUID()) == null) return;
         Player target = compass.getTarget();
-        Location loc = target.getLocation().clone();
+        if (target != null) this.lastLoc = target.getLocation();
         CompassMeta compassMeta = compass.getCompassMeta();
-        compassMeta.setLodestone(loc);
-        compassMeta.displayName(PlayerCompass.generateDisplayName(target.getName(), loc));
+        compassMeta.setLodestone(lastLoc);
+        compassMeta.displayName(PlayerCompass.generateDisplayName(compass.getTargetName(), lastLoc));
         compass.setCompassMeta(compassMeta);
         manager.updateCompassCache(compass);
 
@@ -43,7 +44,7 @@ class PlayerCompassPointUpdater extends BukkitRunnable {
                     ItemStack oldCompass = entry.getValue();
                     if (PlayerCompass.equals(oldCompass, compass)) {
                         CompassMeta meta = compass.getCompassMeta();
-                        meta.displayName(PlayerCompass.generateDisplayNameWithPlaneDistance(target.getName(), loc, p.getLocation()));
+                        meta.displayName(PlayerCompass.generateDisplayNameWithPlaneDistance(compass.getTargetName(), lastLoc, p.getLocation()));
                         compass.setCompassMeta(meta);
                         compass.setAmount(oldCompass.getAmount());
                         p.getInventory().setItem(entry.getKey(), compass);
